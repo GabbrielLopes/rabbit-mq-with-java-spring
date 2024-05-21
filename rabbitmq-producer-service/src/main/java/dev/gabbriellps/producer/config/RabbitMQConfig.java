@@ -12,6 +12,10 @@ public class RabbitMQConfig {
     public static final String RK_PRODUCT_LOG = "product.log";
 
 
+    public static final String QUEUE_PRODUCT_PDF = "product.pdf";
+    public static final String RK_PRODUCT_PDF = "product.pdf";
+
+
     private AmqpAdmin amqpAdmin;
 
     public RabbitMQConfig(AmqpAdmin amqpAdmin) {
@@ -34,6 +38,13 @@ public class RabbitMQConfig {
                 .bind(queue())
                 .to(directExchange())
                 .with(RK_PRODUCT_LOG);
+    }
+
+    public static Binding createNewBinding(Queue queue, DirectExchange directExchange, String bindingKey) {
+        return BindingBuilder
+                .bind(queue)
+                .to(directExchange)
+                .with(bindingKey);
     }
 
 //    @Bean

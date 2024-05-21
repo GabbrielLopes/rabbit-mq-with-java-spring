@@ -7,8 +7,7 @@ import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 
-import static dev.gabbriellps.producer.config.RabbitMQConfig.EXG_NAME_MARKETPLACE;
-import static dev.gabbriellps.producer.config.RabbitMQConfig.RK_PRODUCT_LOG;
+import static dev.gabbriellps.producer.config.RabbitMQConfig.*;
 
 @Component
 @RequiredArgsConstructor
@@ -28,5 +27,19 @@ public class StringProducer {
             log.error("Error send message - {}", e.getMessage());
         }
     }
+
+
+    public void sendMessagePdf(String msg){
+        log.info("Receveid message: {}", msg);
+
+        try {
+            rabbitTemplate.convertAndSend(EXG_NAME_MARKETPLACE, RK_PRODUCT_PDF, msg);
+            log.info("Message PDF sent successfully!");
+        } catch (AmqpException e){
+            log.error("Error send message - {}", e.getMessage());
+        }
+    }
+
+
 
 }
