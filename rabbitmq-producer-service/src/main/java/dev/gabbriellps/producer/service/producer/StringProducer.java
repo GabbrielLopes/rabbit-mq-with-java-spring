@@ -28,18 +28,4 @@ public class StringProducer {
         }
     }
 
-
-    public void sendMessagePdf(String msg){
-        log.info("Receveid message: {}", msg);
-
-        try {
-            rabbitTemplate.convertAndSend(EXG_NAME_MARKETPLACE, RK_PRODUCT_PDF, msg);
-            log.info("Message PDF sent successfully!");
-        } catch (AmqpException e){
-            log.error("Error send message - {}", e.getMessage());
-        }
-    }
-
-
-
 }
