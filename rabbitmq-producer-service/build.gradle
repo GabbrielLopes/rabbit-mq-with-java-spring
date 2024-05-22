@@ -19,11 +19,18 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven {
+        url "file:///C:/Users/gabriel/.m2/repository"
+    }
+    flatDir {
+        dirs("../rabbitmq-commons/target")
+    }
 }
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'dev.gabbriellps:rabbitmq-commons:1.0-SNAPSHOT'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

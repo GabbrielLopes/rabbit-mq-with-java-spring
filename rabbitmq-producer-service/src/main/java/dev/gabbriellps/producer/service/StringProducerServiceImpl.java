@@ -1,9 +1,12 @@
 package dev.gabbriellps.producer.service;
 
+import dev.gabbriellps.dto.ProductDTO;
 import dev.gabbriellps.producer.config.RabbitMQConfig;
 import dev.gabbriellps.producer.service.interfaces.StringProducerService;
+import dev.gabbriellps.producer.service.producer.ProductProducer;
 import dev.gabbriellps.producer.service.producer.StringProducer;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.DirectExchange;
@@ -12,24 +15,22 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class StringProducerServiceImpl implements StringProducerService {
 
-    private final StringProducer producer;
+    private final StringProducer stringProducer;
+    private final ProductProducer productProducer;
     private final AmqpAdmin amqpAdmin;
 
 
     @Override
     public void produceString(String message) {
-        // Cria nova fila e vinculo de teste, para o consumidor receber mensagens de filas diferentes
-        Queue queue = new Queue(RabbitMQConfig.QUEUE_PRODUCT_PDF, false, false, false);
-        amqpAdmin.declareQueue(queue);
-        Binding newBinding = RabbitMQConfig.createNewBinding(queue,
-                new DirectExchange(RabbitMQConfig.EXG_NAME_MARKETPLACE), RabbitMQConfig.RK_PRODUCT_PDF);
+        stringProducer.sendMessage(message);
+    }
 
-        amqpAdmin.declareBinding(newBinding);
-
-        producer.sendMessage(message);
-        producer.sendMessagePdf(message);
+    @Override
+    public void produceProductDTO(ProductDTO productDTO) {
+        productProducer.sendMessageToRabbit(productDTO);
     }
 
 }

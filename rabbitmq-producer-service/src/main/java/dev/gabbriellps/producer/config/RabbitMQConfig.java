@@ -28,6 +28,11 @@ public class RabbitMQConfig {
     }
 
     @Bean
+    public Queue queue2() {
+        return new Queue(QUEUE_PRODUCT_PDF, false, false, false);
+    }
+
+    @Bean
     public DirectExchange directExchange() {
         return new DirectExchange(EXG_NAME_MARKETPLACE, false, false);
     }
@@ -40,17 +45,12 @@ public class RabbitMQConfig {
                 .with(RK_PRODUCT_LOG);
     }
 
-    public static Binding createNewBinding(Queue queue, DirectExchange directExchange, String bindingKey) {
+    @Bean
+    public Binding binding2() {
         return BindingBuilder
-                .bind(queue)
-                .to(directExchange)
-                .with(bindingKey);
+                .bind(queue2())
+                .to(directExchange())
+                .with(RK_PRODUCT_PDF);
     }
-
-//    @Bean
-//    public void create(){
-//        this.amqpAdmin.declareBinding(binding());
-//    }
-
 
 }
